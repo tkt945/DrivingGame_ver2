@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.drivinggame.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "D:\\BJ_Himself\\DrivingGame_ver2-main\\DrivingGame_ver2-main\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "DrivingGame [Testing]"
+        }
+      }
+    }
+  ]
+}

@@ -9,12 +9,12 @@ using System.Threading;
 
 public class CarController : MonoBehaviour
 {
-    public SerialPort sp = new SerialPort("COM3", 74880);
+    public SerialPort sp = new SerialPort("COM1", 9600);
 
-    public GameObject CarSteering;  //方向盤
+    public GameObject CarSteering,warning_vision;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
     public AudioSource audioSource2;  //引擎聲音2
-    public Text speedometer; //面板參考
+    public Text speedometer,gear,tilt_txt; //面板參考
 
     //輸入裝置的input
     private float m_horizontalInput;
@@ -53,23 +53,28 @@ public class CarController : MonoBehaviour
     {
         sp.Open();
         GetComponent<Rigidbody>().centerOfMass = centreOfMass;
-
+        gear.text = "D";
         // 本來是寫給自動駕駛但後來沒用到
-        Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
-        nodes = new List<Transform>();
+        //Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
+        //nodes = new List<Transform>();
 
-        for (int i = 0; i < pathTransform.Length; i++)
-        {
-            if (pathTransform[i] != path.transform)
-            {
-                nodes.Add(pathTransform[i]);
-            }
-        }
+        //for (int i = 0; i < pathTransform.Length; i++)
+        //{
+        //if (pathTransform[i] != path.transform)
+        //{
+        //nodes.Add(pathTransform[i]);
+        //}
+        //}
     }
+    private void Update() {
+        GetInput();
+        warning_vision.SetActive(Mathf.Abs((float)tilt) >= 15);
+        tilt_txt.text = tilt.ToString();
 
+    }
     private void FixedUpdate()
     {
-        GetInput();
+        
         Steer();
         Accelerate();
         UpdateWheelPoses();
@@ -85,29 +90,45 @@ public class CarController : MonoBehaviour
     {
         m_horizontalInput = Input.GetAxis("Horizontal"); //方向盤的輸入
         m_verticalInput = Input.GetAxis("Vertical"); //油門煞車的輸入
+        //wheel.text = Convert.ToString(Input.GetAxis("Horizontal"));
 
         //汽車位置變換
         if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Joystick1Button2))
         {
-            transform.position = new Vector3(65, -8, 243);
-            transform.rotation = new Quaternion(0, 8, 0, 0);
+            transform.position = new Vector3(-193.07f,-1.676f,29.973f);
+            transform.rotation = new Quaternion(0, 185.07f, 0, 0);
         }
         if (Input.GetKeyDown(KeyCode.T) || Input.GetKeyDown(KeyCode.Joystick1Button3))
         {
-            transform.position = new Vector3(-290, -214, 30);
-            transform.rotation = new Quaternion(0, 8, 0, 0);
+            transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
+            transform.rotation = new Quaternion(0,0, 0, 0);
         }
+         
 
         //D檔R檔切換
-        if (Input.GetKeyDown(KeyCode.Joystick1Button4))
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
         {
             Gear = 1;
+            gear.text = "D";
         }
 
-        if (Input.GetKeyDown(KeyCode.Joystick1Button5))
+        if(Input.GetKeyDown(KeyCode.D)) 
+        {
+            Gear = 1;
+            gear.text = "D";
+        }
+
+        if (Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
             Gear = 0;
+            gear.text = "R";
         }
+
+        if(Input.GetKeyDown(KeyCode.S)) {
+            Gear = 0;
+            gear.text = "R";
+        }
+
     }
 
     //方向盤控制輪胎轉角
@@ -177,10 +198,11 @@ public class CarController : MonoBehaviour
             W_FP.motorTorque = 0;
             W_RD.motorTorque = 0;
             W_RP.motorTorque = 0;
-            W_FD.brakeTorque = 100;
-            W_FP.brakeTorque = 100;
-            W_RD.brakeTorque = 100;
-            W_RP.brakeTorque = 100;
+
+            W_FD.brakeTorque = .0001f;
+            W_FP.brakeTorque = 0.0001f;
+            W_RD.brakeTorque = 0.0001f;
+            W_RP.brakeTorque = 0.0001f;
         }
     }
 
@@ -192,7 +214,7 @@ public class CarController : MonoBehaviour
         UpdateWheelPose(W_RD, T_RD);
         UpdateWheelPose(W_RP, T_RP);
 
-        CarSteering.transform.localEulerAngles = new Vector3(-20, 180, m_horizontalInput * 135);
+        CarSteering.transform.localEulerAngles = new Vector3(-20, 180, m_horizontalInput * 540);
     }
     private void UpdateWheelPose(WheelCollider _collider, Transform _transform)
     {
@@ -319,7 +341,8 @@ public class CarController : MonoBehaviour
             info = acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00");
             sp.WriteLine(info);
             //在面板上check
-            speedometer.text = Math.Round(speed, 2, MidpointRounding.AwayFromZero) + " m/s " + Environment.NewLine + Math.Round(acceleration, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
+            //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(acceleration, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
+            speedometer.text = Math.Round(speed * 3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " ;
 
             lastVelocity = GetComponent<Rigidbody>().velocity.magnitude;
             timer_a = 0;
