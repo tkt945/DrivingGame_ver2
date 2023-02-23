@@ -11,7 +11,7 @@ public class CarController : MonoBehaviour
 {
     public SerialPort sp = new SerialPort("COM1", 9600);
 
-    public GameObject CarSteering,warning_vision;  //方向盤
+    public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
     public AudioSource audioSource2;  //引擎聲音2
     public Text speedometer,gear,tilt_txt; //面板參考
@@ -236,9 +236,10 @@ public class CarController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         audioSource2.Play();
+        
     }
 
-    
+
     // SendInfo: 傳送資料給Arduino
     private void SendInfo()
     {
