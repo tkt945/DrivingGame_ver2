@@ -90,7 +90,6 @@ public class CarController : MonoBehaviour
     {
         m_horizontalInput = Input.GetAxis("Horizontal"); //方向盤的輸入
         m_verticalInput = Input.GetAxis("Vertical"); //油門煞車的輸入
-        Debug.Log(Input.GetAxis("Vertical"));
         //wheel.text = Convert.ToString(Input.GetAxis("Horizontal"));
 
         //汽車位置變換
