@@ -9,7 +9,7 @@ using System.Threading;
 
 public class CarController : MonoBehaviour
 {
-    public SerialPort sp = new SerialPort("COM1", 9600);
+    public SerialPort sp = new SerialPort("COM3", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -90,6 +90,7 @@ public class CarController : MonoBehaviour
     {
         m_horizontalInput = Input.GetAxis("Horizontal"); //方向盤的輸入
         m_verticalInput = Input.GetAxis("Vertical"); //油門煞車的輸入
+        Debug.Log(Input.GetAxis("Vertical"));
         //wheel.text = Convert.ToString(Input.GetAxis("Horizontal"));
 
         //汽車位置變換
