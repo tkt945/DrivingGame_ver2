@@ -150,6 +150,7 @@ public class CarController : MonoBehaviour
         }
         else if (ctx.canceled)
         {
+            m_brakeInput = 0;
             m_brakePressed = false;
             //Debug.Log("Brake Up");
         }
@@ -181,6 +182,7 @@ public class CarController : MonoBehaviour
         }
         else if (ctx.canceled)
         {
+            m_gasInput = 0;
             m_gasPressed = false;
             //Debug.Log("Gas Up");
         }
