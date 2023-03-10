@@ -22620,7 +22620,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598281895}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
@@ -25452,6 +25452,192 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &696885424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696885421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 9d202f47eb6ba6641be313c4b6c5c13d,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: Turn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8cf21919-b487-415c-84f3-4dd3cd5d6bd3
+    m_ActionName: Car/Left Right[/44F B677/stick/x]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: BrakePeddle_Brake
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 42fc6593-fca9-4d4b-923d-1502d7ab3342
+    m_ActionName: Car/Brake[/44F B677/stick/y]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: Gas
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 175f1bfb-eb60-41c7-8a74-981b2a0240dd
+    m_ActionName: Car/Gas[/44F B677/rz]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: PosReset0
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e932f43c-f4a3-494d-a954-1ab7d71b533d
+    m_ActionName: Car/Button Triangle[/44F B677/button3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: PosReset1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1e3611bc-63b5-457d-9e42-e3818c32c8f9
+    m_ActionName: Car/Button Square[/44F B677/button4]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5c484551-712e-42cc-a94d-d7c4aeaba5a7
+    m_ActionName: Car/Button Circle[/44F B677/button5]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 07df03a6-ee55-4eae-b276-fd06d8e0d4df
+    m_ActionName: Car/Button X[/44F B677/button6]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: ShiftGear
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2a2ddc09-57a7-4b77-8c11-2d95be433db1
+    m_ActionName: Car/Shift Gear[/44F B677/trigger,/44F B677/button2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: Tilt0
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 80842a4a-525c-4ac7-a380-a599be5b4a20
+    m_ActionName: Car/Tilt Test 0[/Keyboard/comma]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: Tilt8
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 553cfadb-8f70-49c0-b068-92230ce95dc9
+    m_ActionName: Car/Tilt Test 8[/Keyboard/period]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 696885425}
+        m_MethodName: BrakePeddle_Gas
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 65f31328-1f18-45f3-bb09-a751dfcd1d2f
+    m_ActionName: Car/Brake Peddle Gas[/44F B677/stick/down]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: T150 Controller
+  m_DefaultActionMap: Car
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &696885425 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
+    type: 3}
+  m_PrefabInstance: {fileID: 904203779}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696885421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a908ab7a520fb418b9bc0ccb7fc33e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &696885428 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 437467672033045016, guid: a5e0dcc6e15dec4419e54a046237f644,
@@ -30727,7 +30913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &924402954
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30758,7 +30944,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924402953}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba2db724fea8f204aaada31bb1e12229, type: 3}
   m_Name: 

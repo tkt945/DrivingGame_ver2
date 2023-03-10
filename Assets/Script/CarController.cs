@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.IO.Ports;
 using System;
 using UnityEngine.UI;
-using System.Threading;
+using UnityEngine.InputSystem;
 
 
 public class CarController : MonoBehaviour
@@ -18,8 +17,10 @@ public class CarController : MonoBehaviour
 
     //輸入裝置的input
     private float m_horizontalInput;
-    private float m_verticalInput;
+    private float m_brakeInput=0,m_brakeGasInput =1, m_gasInput=0;
+    private bool m_brakePressed = false, m_brakeGasPressed = false, m_gasPressed=false;
     private float m_steeringAngle;
+//    private Vector2 stick;
 
     //本來是寫給自動駕駛但後來沒用到
     private List<Transform> nodes;
@@ -67,7 +68,7 @@ public class CarController : MonoBehaviour
         //}
     }
     private void Update() {
-        GetInput();
+        //GetInput();
         warning_vision.SetActive(Mathf.Abs((float)tilt) >= 15);
         tilt_txt.text = tilt.ToString();
 
@@ -85,11 +86,11 @@ public class CarController : MonoBehaviour
         //CheckWayPointDistance(); 本來是寫給自動駕駛但後來沒用到   
     }
 
-    //取得輸入值
-    public void GetInput()
+    //取得輸入值    
+ /*   public void GetInput()
     {
         m_horizontalInput = Input.GetAxis("Horizontal"); //方向盤的輸入
-        m_verticalInput = Input.GetAxis("Vertical"); //油門煞車的輸入
+        m_gasInput = Input.GetAxis("Vertical"); //油門煞車的輸入
         //wheel.text = Convert.ToString(Input.GetAxis("Horizontal"));
 
         //汽車位置變換
@@ -129,7 +130,115 @@ public class CarController : MonoBehaviour
             gear.text = "R";
         }
 
+    }*/
+
+    public void Turn(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            m_horizontalInput = ctx.ReadValue<float>();            
+        }
     }
+
+    public void BrakePeddle_Brake(InputAction.CallbackContext ctx)
+    {        
+        if (ctx.performed)
+        {
+            m_brakeInput = ctx.ReadValue<float>();
+            //Debug.Log("Brake Pressed");
+            m_brakePressed = true;
+        }
+        else if (ctx.canceled)
+        {
+            m_brakePressed = false;
+            //Debug.Log("Brake Up");
+        }
+    }
+    
+    public void BrakePeddle_Gas(InputAction.CallbackContext ctx)
+    {        
+        if (ctx.performed)
+        {
+            m_brakeGasInput = ctx.ReadValue<float>();
+            //Debug.Log("Brake Peddle Gas Pressed");
+            m_brakeGasPressed = true;            
+        }
+        else if (ctx.canceled)
+        {
+            m_brakeGasPressed = false;
+            //Debug.Log("Brake Peddle Gas Up");
+        }
+    }
+
+    public void Gas(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            m_gasInput = (ctx.ReadValue<float>()*(-1)+1)/2;
+            //Debug.Log(ctx.ReadValue<float>());
+            //Debug.Log("Gas Pressed");
+            m_gasPressed = true;
+        }
+        else if (ctx.canceled)
+        {
+            m_gasPressed = false;
+            //Debug.Log("Gas Up");
+        }
+    }
+    public void PosReset0(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
+            transform.rotation = new Quaternion(0, 185.07f, 0, 0);
+        }
+        
+    }
+    public void PosReset1(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
+
+    }
+    public void ShiftGear(InputAction.CallbackContext ctx)
+    {        
+        if (ctx.performed)
+        {
+            if (ctx.ReadValue<float>() < 0)
+            {
+                Gear = 0;
+                gear.text = "R";
+            }
+            else if(ctx.ReadValue<float>() > 0)
+            {
+                Gear = 1;
+                gear.text = "D";
+            }
+            
+        }
+
+    }
+
+
+
+
+    /*    public void Tilt0(InputAction.CallbackContext ctx)
+        {
+            if (ctx.performed)
+            {
+                tilt = 0;
+            }
+        }
+        public void Tilt8(InputAction.CallbackContext ctx)
+        {
+            if (ctx.performed)
+            {
+                tilt = 8;
+            }
+        }*/
 
     //方向盤控制輪胎轉角
     private void Steer()
@@ -155,23 +264,25 @@ public class CarController : MonoBehaviour
         speed = GetComponent<Rigidbody>().velocity.magnitude; //unit: m/s  transfer to km/h *3.6
 
         //加速
-        if (m_verticalInput > 0 && Gear == 1)
+        if (!m_brakePressed && Gear == 1)
         {
-            W_FD.motorTorque = m_verticalInput * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_FP.motorTorque = m_verticalInput * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_RD.motorTorque = m_verticalInput * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_RP.motorTorque = m_verticalInput * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_RD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_RP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
             W_RP.brakeTorque = 0;
         }
-        else if (m_verticalInput > 0 && Gear == 0)
+
+        //倒車
+        else if (!m_brakePressed && Gear == 0)
         {
-            W_FD.motorTorque = -1 * m_verticalInput * motorForce / 3;
-            W_FP.motorTorque = -1 * m_verticalInput * motorForce / 3;
-            W_RD.motorTorque = -1 * m_verticalInput * motorForce / 3;
-            W_RP.motorTorque = -1 * m_verticalInput * motorForce / 3;
+            W_FD.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
+            W_FP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
+            W_RD.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
+            W_RP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
@@ -179,16 +290,16 @@ public class CarController : MonoBehaviour
         }
 
         //煞車
-        else if (m_verticalInput < 0 )
+        else if (m_brakePressed)
         {
             W_FD.motorTorque = 0;
             W_FP.motorTorque = 0;
             W_RD.motorTorque = 0;
             W_RP.motorTorque = 0;
-            W_FD.brakeTorque = -1.6f * m_verticalInput * motorForce;
-            W_FP.brakeTorque = -1.6f * m_verticalInput * motorForce;
-            W_RD.brakeTorque = -1.6f * m_verticalInput * motorForce;
-            W_RP.brakeTorque = -1.6f * m_verticalInput * motorForce;
+            W_FD.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_FP.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_RD.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_RP.brakeTorque = -1.6f * m_brakeInput * motorForce;
         }
 
         //漸停
@@ -322,7 +433,7 @@ public class CarController : MonoBehaviour
             }
 
             tilt = GetComponent<Rigidbody>().rotation.eulerAngles.x;
-
+            
             if (tilt > 300)
             {
                 tilt = tilt - 360;
