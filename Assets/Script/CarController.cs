@@ -49,6 +49,9 @@ public class CarController : MonoBehaviour
     double tilt; //傾斜角
     string info; //傳送給Arduino的字串
 
+    double maxTilt = 0;
+    double minTilt = 0;
+
 
     private void Start()
     {
@@ -435,11 +438,25 @@ public class CarController : MonoBehaviour
             }
 
            tilt = GetComponent<Rigidbody>().rotation.eulerAngles.x;
+
+            
             
             if (tilt > 300)
             {
                 tilt = tilt - 360;
             }
+
+            if (tilt > maxTilt)
+            {
+                maxTilt = tilt;
+            }
+            Debug.Log("最大後傾角=" + maxTilt);
+
+            if (tilt < minTilt)
+            {
+                minTilt = tilt;
+            }
+            Debug.Log("最大前傾角=" + minTilt);
 
             if (tilt >= 8)
             {
