@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class CarController : MonoBehaviour
 {
-    public SerialPort sp = new SerialPort("COM3", 115200);
+    public SerialPort sp = new SerialPort("COM6", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -227,7 +227,7 @@ public class CarController : MonoBehaviour
 
 
 
-    /*    public void Tilt0(InputAction.CallbackContext ctx)
+        /*public void Tilt0(InputAction.CallbackContext ctx)
         {
             if (ctx.performed)
             {
@@ -241,7 +241,7 @@ public class CarController : MonoBehaviour
                 tilt = 8;
             }
         }*/
-
+        
     //方向盤控制輪胎轉角
     private void Steer()
     {
@@ -434,7 +434,7 @@ public class CarController : MonoBehaviour
                 }
             }
 
-            tilt = GetComponent<Rigidbody>().rotation.eulerAngles.x;
+           tilt = GetComponent<Rigidbody>().rotation.eulerAngles.x;
             
             if (tilt > 300)
             {
@@ -452,7 +452,7 @@ public class CarController : MonoBehaviour
             }
             
             //傳給Arduino
-            info = acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00");
+            info = "s,"+acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00")+",";
             sp.WriteLine(info);
             //在面板上check
             //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(acceleration, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
