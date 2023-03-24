@@ -437,11 +437,12 @@ public class CarController : MonoBehaviour
                 }
             }
 
-           tilt = GetComponent<Rigidbody>().rotation.eulerAngles.x;
+            //tilt + 前傾, - 後傾
+            tilt = GetComponent<Rigidbody>().rotation.eulerAngles.x;
 
             
             
-            if (tilt > 300)
+            if (tilt > 180)
             {
                 tilt = tilt - 360;
             }
@@ -450,13 +451,12 @@ public class CarController : MonoBehaviour
             {
                 maxTilt = tilt;
             }
-            Debug.Log("最大後傾角=" + maxTilt);
-
+            
             if (tilt < minTilt)
             {
                 minTilt = tilt;
             }
-            Debug.Log("最大前傾角=" + minTilt);
+            Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
             if (tilt >= 8)
             {
