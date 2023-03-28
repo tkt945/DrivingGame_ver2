@@ -57,7 +57,7 @@ public class CarController : MonoBehaviour
     {
         sp.Open();
         GetComponent<Rigidbody>().centerOfMass = centreOfMass;
-        gear.text = "D";
+        gear.text = "N";
         // 本來是寫給自動駕駛但後來沒用到
         //Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
         //nodes = new List<Transform>();
@@ -212,17 +212,28 @@ public class CarController : MonoBehaviour
     {        
         if (ctx.performed)
         {
-            if (ctx.ReadValue<float>() < 0)
+            if (ctx.ReadValue<float>() < 0 && Gear > 0)
             {
-                Gear = 0;
-                gear.text = "R";
+                Gear -= 1;
             }
-            else if(ctx.ReadValue<float>() > 0)
+            else if(ctx.ReadValue<float>() > 0 && Gear < 2)
             {
-                Gear = 1;
-                gear.text = "D";
+                Gear += 1;
             }
-            
+                        
+        }
+
+        if(Gear == 0)
+        {
+            gear.text = "R";
+        }
+        else if(Gear == 1)
+        {
+            gear.text = "N";
+        }
+        else if(Gear == 2)
+        {
+            gear.text = "D";
         }
 
     }
@@ -269,7 +280,7 @@ public class CarController : MonoBehaviour
         speed = GetComponent<Rigidbody>().velocity.magnitude; //unit: m/s  transfer to km/h *3.6
 
         //加速
-        if (!m_brakePressed && Gear == 1)
+        if (!m_brakePressed && Gear == 2)
         {
             W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
             W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
@@ -288,6 +299,20 @@ public class CarController : MonoBehaviour
             W_FP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
             W_RD.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
             W_RP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
+            W_FD.brakeTorque = 0;
+            W_FP.brakeTorque = 0;
+            W_RD.brakeTorque = 0;
+            W_RP.brakeTorque = 0;
+        }
+
+        //N檔
+        else if(!m_brakePressed && Gear == 1)
+        {
+            W_FD.motorTorque = 0;
+            W_FP.motorTorque = 0;
+            W_RD.motorTorque = 0;
+            W_RP.motorTorque = 0;
+
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
@@ -315,7 +340,7 @@ public class CarController : MonoBehaviour
             W_RD.motorTorque = 0;
             W_RP.motorTorque = 0;
 
-            W_FD.brakeTorque = .0001f;
+            W_FD.brakeTorque = 0.0001f;
             W_FP.brakeTorque = 0.0001f;
             W_RD.brakeTorque = 0.0001f;
             W_RP.brakeTorque = 0.0001f;
@@ -458,14 +483,14 @@ public class CarController : MonoBehaviour
             }
             Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
-            if (tilt >= 8)
+            if (tilt >= 5)
             {
-                tilt = 8;
+                tilt = 5;
             }
 
-            if (tilt <= -8)
+            if (tilt <= -5)
             {
-                tilt = -8;
+                tilt = -5;
             }
             
             //傳給Arduino
