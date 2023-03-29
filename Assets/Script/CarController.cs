@@ -14,7 +14,7 @@ public class CarController : MonoBehaviour
     public AudioSource audioSource1;  //引擎聲音1
     public AudioSource audioSource2;  //引擎聲音2
     public Text speedometer,gear,tilt_txt; //面板參考
-
+    public Rigidbody rb;
     //輸入裝置的input
     private float m_horizontalInput;
     private float m_brakeInput=0,m_brakeGasInput =1, m_gasInput=0;
@@ -56,6 +56,7 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         sp.Open();
+        
         GetComponent<Rigidbody>().centerOfMass = centreOfMass;
         gear.text = "N";
         // 本來是寫給自動駕駛但後來沒用到
@@ -196,6 +197,7 @@ public class CarController : MonoBehaviour
         {
             transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
             transform.rotation = new Quaternion(0, 185.07f, 0, 0);
+            
         }
         
     }
@@ -205,6 +207,14 @@ public class CarController : MonoBehaviour
         {
             transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
             transform.rotation = new Quaternion(0, 0, 0, 0);
+            //位置重置時使車輛動態靜止
+            rb.velocity = new Vector3(0, 0, 0);
+            W_FD.motorTorque = 0;
+            W_FP.motorTorque = 0;
+            W_RD.motorTorque = 0;
+            W_RP.motorTorque = 0;   
+
+
         }
 
     }

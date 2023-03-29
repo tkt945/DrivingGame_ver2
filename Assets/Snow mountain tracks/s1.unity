@@ -567,7 +567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &463639967
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -714,6 +714,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
+        type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 1346951862}
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: gear
@@ -1779,6 +1784,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a908ab7a520fb418b9bc0ccb7fc33e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &1346951862 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 437467672033045018, guid: a5e0dcc6e15dec4419e54a046237f644,
+    type: 3}
+  m_PrefabInstance: {fileID: 620709412}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1346951864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 437467672033045016, guid: a5e0dcc6e15dec4419e54a046237f644,
