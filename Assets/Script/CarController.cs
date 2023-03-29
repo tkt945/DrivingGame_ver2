@@ -451,6 +451,11 @@ public class CarController : MonoBehaviour
                 {
                     acce2 = 9.11;
                 }
+                //來齁這裡我設個下限2，acce2的絕對值低於這個下陷會被省略不被椅子表現出來。下面反向同理。
+                else if (acce2 < 2) 
+                {
+                    acce2 = 0;
+                }
             }
 
             if (centri_acce < 0)
@@ -459,6 +464,11 @@ public class CarController : MonoBehaviour
                 if (acce2 < -9.2)
                 {
                     acce2 = -9.2;
+                }
+
+                else if(acce2 > -2) 
+                {
+                    acce2 = 0;
                 }
             }
 
