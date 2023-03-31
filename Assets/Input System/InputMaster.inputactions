@@ -11,7 +11,8 @@
                     "id": "8cf21919-b487-415c-84f3-4dd3cd5d6bd3",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Brake Peddle Brake",
@@ -19,7 +20,8 @@
                     "id": "42fc6593-fca9-4d4b-923d-1502d7ab3342",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Brake Peddle Gas",
@@ -27,7 +29,8 @@
                     "id": "65f31328-1f18-45f3-bb09-a751dfcd1d2f",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Gas",
@@ -35,7 +38,8 @@
                     "id": "175f1bfb-eb60-41c7-8a74-981b2a0240dd",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Button Triangle",
@@ -43,7 +47,8 @@
                     "id": "e932f43c-f4a3-494d-a954-1ab7d71b533d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Button Square",
@@ -51,7 +56,8 @@
                     "id": "1e3611bc-63b5-457d-9e42-e3818c32c8f9",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Button Circle",
@@ -59,7 +65,8 @@
                     "id": "5c484551-712e-42cc-a94d-d7c4aeaba5a7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Button X",
@@ -67,7 +74,8 @@
                     "id": "07df03a6-ee55-4eae-b276-fd06d8e0d4df",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Shift Gear",
@@ -75,7 +83,8 @@
                     "id": "2a2ddc09-57a7-4b77-8c11-2d95be433db1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Tilt Test 0",
@@ -83,7 +92,8 @@
                     "id": "80842a4a-525c-4ac7-a380-a599be5b4a20",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Tilt Test 8",
@@ -91,7 +101,8 @@
                     "id": "553cfadb-8f70-49c0-b068-92230ce95dc9",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -105,6 +116,39 @@
                     "action": "Brake Peddle Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "f23afe34-5bff-4574-a691-0ed8490744ab",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake Peddle Brake",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "83f505d3-b757-49b3-b99a-4698617d2c17",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake Peddle Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "8cf57924-63c0-494d-84d8-eac1eec870fd",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake Peddle Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -138,6 +182,39 @@
                     "action": "Left Right",
                     "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "cd762196-12e8-48fe-b36d-5ba05a830c77",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Right",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "2ac957a4-0a41-4945-87b0-58b4a4901a7a",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Right",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "baeab1e5-d4be-4030-924a-0198271dea9a",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Right",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -303,6 +380,39 @@
                     "action": "Brake Peddle Gas",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "e87dc303-c9d0-4b8a-b107-3bf0ba6bee64",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake Peddle Gas",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "67fbf9fd-3d8e-4ddd-8098-df0c2e04db05",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake Peddle Gas",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "191bc672-44cc-4f43-baea-310cf355a9b9",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake Peddle Gas",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
