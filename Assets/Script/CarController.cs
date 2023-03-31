@@ -197,7 +197,13 @@ public class CarController : MonoBehaviour
         {
             transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
             transform.rotation = new Quaternion(0, 185.07f, 0, 0);
-            
+            //位置重置時使車輛動態靜止
+            rb.velocity = new Vector3(0, 0, 0);
+            W_FD.motorTorque = 0;
+            W_FP.motorTorque = 0;
+            W_RD.motorTorque = 0;
+            W_RP.motorTorque = 0;
+
         }
         
     }
