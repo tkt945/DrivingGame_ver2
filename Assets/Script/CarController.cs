@@ -528,7 +528,7 @@ public class CarController : MonoBehaviour
             sp.WriteLine(info);
             //在面板上check
             //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(acceleration, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
-            speedometer.text = Math.Round(speed * 3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " ;
+            speedometer.text = Math.Round(speed * 3.6f, 1, MidpointRounding.AwayFromZero) + " km/hr " ;
 
             lastVelocity = GetComponent<Rigidbody>().velocity.magnitude;
             timer_a = 0;
