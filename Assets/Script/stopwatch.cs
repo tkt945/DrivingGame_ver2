@@ -19,7 +19,7 @@ public class stopwatch : MonoBehaviour
     void Update()
     {
         
-        if(k % 2 != 0) {
+        if(k % 2 != 0 & k<=2 ) {
             currentTime += Time.deltaTime;
             min = Mathf.Floor(currentTime / 60);
             sec = currentTime % 60;

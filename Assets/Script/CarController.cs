@@ -73,7 +73,7 @@ public class CarController : MonoBehaviour
     }
     private void Update() {
         //GetInput();
-        warning_vision.SetActive(Mathf.Abs((float)tilt) >= 15);
+        //warning_vision.SetActive(Mathf.Abs((float)tilt) >= 15);
         tilt_txt.text = tilt.ToString();
 
     }
@@ -302,10 +302,10 @@ public class CarController : MonoBehaviour
         //加速
         if (!m_brakePressed && Gear == 2)
         {
-            W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_RD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_RP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
+            W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
+            W_RD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
+            W_RP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
@@ -406,7 +406,7 @@ public class CarController : MonoBehaviour
     {
         timer_a += Time.fixedDeltaTime;
         i++;
-        if (i >= 10) //每10幀傳送
+        if (i >= 1) //每1幀傳送
         {
             acceleration = (speed - lastVelocity) / timer_a; //計算加速度
             centri_acce = speed * speed / R; //計算向心加速度
@@ -513,22 +513,22 @@ public class CarController : MonoBehaviour
             }
             Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
-            if (tilt >= 5)
-            {
-                tilt = 5;
-            }
-
-            if (tilt <= -5)
-            {
-                tilt = -5;
-            }
+            //if (tilt >= 5)
+            //{
+            //    tilt = 5;
+            //}
+            //
+            //if (tilt <= -5)
+            //{
+            //    tilt = -5;
+            //}
             
             //傳給Arduino
             info = "s,"+acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00")+",";
             sp.WriteLine(info);
             //在面板上check
             //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(acceleration, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
-            speedometer.text = Math.Round(speed * 3.6f, 1, MidpointRounding.AwayFromZero) + " km/hr " ;
+            speedometer.text = Math.Round(speed * 3.6f, 1, MidpointRounding.AwayFromZero)*3 + " km/h " ;
 
             lastVelocity = GetComponent<Rigidbody>().velocity.magnitude;
             timer_a = 0;
