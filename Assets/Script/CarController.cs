@@ -13,7 +13,8 @@ public class CarController : MonoBehaviour
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
     public AudioSource audioSource2;  //引擎聲音2
-    public Text speedometer,gear,tilt_txt; //面板參考
+    public Text speedometer,gear,tilt_txt, ace1,ace2,endtxt; //面板參考
+    public Image ending;//結束畫面
     public Rigidbody rb;
     //輸入裝置的input
     private float m_horizontalInput;
@@ -40,8 +41,10 @@ public class CarController : MonoBehaviour
     public int Gear;
 
     //擷取資料(值會變動)
-    int i;
-    float speed, lastVelocity, acceleration, timer_a;
+    int i,j;
+    float[] tan_acceArray = new float[10] {0,0,0,0,0,0,0,0,0,0};
+    float speed, lastVelocity, tan_acce, timer_a;
+    float sum_tan_acce, avg_tan_acce;
     double R, centri_acce;
 
     double acce1; //前後的坐墊位移值
@@ -49,8 +52,10 @@ public class CarController : MonoBehaviour
     double tilt; //傾斜角
     string info; //傳送給Arduino的字串
 
-    double maxTilt = 0;
-    double minTilt = 0;
+    [SerializeField]
+    double maxTilt = 7;
+    [SerializeField]
+    double minTilt = -7;
 
 
     private void Start()
@@ -58,7 +63,9 @@ public class CarController : MonoBehaviour
         sp.Open();
         
         GetComponent<Rigidbody>().centerOfMass = centreOfMass;
-        gear.text = "N";
+        Gear = 0;
+        gear.text = "P";
+
         // 本來是寫給自動駕駛但後來沒用到
         //Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
         //nodes = new List<Transform>();
@@ -113,24 +120,24 @@ public class CarController : MonoBehaviour
         //D檔R檔切換
         if (Input.GetKeyDown(KeyCode.Joystick1Button1))
         {
-            Gear = 1;
+            Gear = 0;
             gear.text = "D";
         }
 
         if(Input.GetKeyDown(KeyCode.D)) 
         {
-            Gear = 1;
+            Gear = 0;
             gear.text = "D";
         }
 
         if (Input.GetKeyDown(KeyCode.Joystick1Button0))
         {
-            Gear = 0;
+            Gear = 3;
             gear.text = "R";
         }
 
         if(Input.GetKeyDown(KeyCode.S)) {
-            Gear = 0;
+            Gear = 3;
             gear.text = "R";
         }
 
@@ -201,22 +208,41 @@ public class CarController : MonoBehaviour
             transform.rotation = new Quaternion(0, 185.07f, 0, 0);*/
             //位置重置時使車輛動態靜止
             rb.velocity = new Vector3(0, 0, 0);
+            gear.text = "P";
+            Gear = 0;
             W_FD.motorTorque = 0;
             W_FP.motorTorque = 0;
             W_RD.motorTorque = 0;
             W_RP.motorTorque = 0;
+            
+            W_FD.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_FP.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_RD.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_RP.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            
+
+
+            if (ending.color.a != 0)
+            {
+                Color end_panel_color = Color.white;
+                end_panel_color.a = 0; 
+                ending.color = end_panel_color;
+                Color endtxt_color = endtxt.color;
+                endtxt_color.a = 0;
+                endtxt.color = endtxt_color;
+            }
 
         }
         
     }
-    public void PosReset1(InputAction.CallbackContext ctx)
+    /*public void PosReset1(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
             transform.position = new Vector3(32.42f, 0.59f, 53.59f);
             transform.eulerAngles = new Vector3(0, 256.9f, 0);
-            /*transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
-            transform.rotation = new Quaternion(0, 0, 0, 0);*/
+            //transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
+            //transform.rotation = new Quaternion(0, 0, 0, 0);
             //位置重置時使車輛動態靜止
             rb.velocity = new Vector3(0, 0, 0);
             W_FD.motorTorque = 0;
@@ -227,7 +253,7 @@ public class CarController : MonoBehaviour
 
         }
 
-    }
+    }*/
     public void ShiftGear(InputAction.CallbackContext ctx)
     {        
         if (ctx.performed)
@@ -243,18 +269,20 @@ public class CarController : MonoBehaviour
                         
         }
 
+        
         if(Gear == 0)
         {
-            gear.text = "R";
+            gear.text = "P";
         }
         else if(Gear == 1)
         {
-            gear.text = "N";
-        }
-        else if(Gear == 2)
-        {
             gear.text = "D";
         }
+        else if (Gear == 2)
+        {
+            gear.text = "R";
+        }
+
 
     }
 
@@ -300,7 +328,7 @@ public class CarController : MonoBehaviour
         speed = GetComponent<Rigidbody>().velocity.magnitude; //unit: m/s  transfer to km/h *3.6
 
         //加速
-        if (!m_brakePressed && Gear == 2)
+        if (!m_brakePressed && Gear == 1)
         {
             W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
             W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
@@ -313,7 +341,7 @@ public class CarController : MonoBehaviour
         }
 
         //倒車
-        else if (!m_brakePressed && Gear == 0)
+        else if (!m_brakePressed && Gear == 2)
         {
             W_FD.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
             W_FP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
@@ -325,18 +353,18 @@ public class CarController : MonoBehaviour
             W_RP.brakeTorque = 0;
         }
 
-        //N檔
-        else if(!m_brakePressed && Gear == 1)
+        //P檔
+        else if(!m_brakePressed && Gear == 0)
         {
             W_FD.motorTorque = 0;
             W_FP.motorTorque = 0;
             W_RD.motorTorque = 0;
             W_RP.motorTorque = 0;
-
-            W_FD.brakeTorque = 0;
-            W_FP.brakeTorque = 0;
-            W_RD.brakeTorque = 0;
-            W_RP.brakeTorque = 0;
+            
+            W_FD.brakeTorque = 0.0001f;
+            W_FP.brakeTorque = 0.0001f;
+            W_RD.brakeTorque = 0.0001f;
+            W_RP.brakeTorque = 0.0001f;
         }
 
         //煞車
@@ -408,13 +436,21 @@ public class CarController : MonoBehaviour
         i++;
         if (i >= 1) //每1幀傳送
         {
-            acceleration = (speed - lastVelocity) / timer_a; //計算加速度
+            tan_acce = (speed - lastVelocity) / timer_a; //計算加速度
+            tan_acceArray[i - 1] = tan_acce;
+            sum_tan_acce = 0;
+            for (j = 0; j < tan_acceArray.Length; j++)
+            {
+                sum_tan_acce += tan_acceArray[j];
+            }
+            avg_tan_acce = sum_tan_acce / tan_acceArray.Length;
+
             centri_acce = speed * speed / R; //計算向心加速度
 
             //計算1.坐墊前後位移值 2.坐墊左右位移值 3.傾斜角
-            if (acceleration >= 0 && Gear == 1)
+            if (avg_tan_acce >= 0 && Gear == 1)
             {
-                acce1 = Math.Pow((acceleration / 0.1172f), (1 / 1.7406f));
+                acce1 = Math.Pow((avg_tan_acce / 0.1172f), (1 / 1.7406f));
                 if (acce1 > 9.64)
                 {
                     acce1 = 9.64;
@@ -423,11 +459,49 @@ public class CarController : MonoBehaviour
                 {
                     acce1 = 0;
                 }
+                if (Math.Abs(acce1)<= 1)
+                {
+                    acce1 = 0;
+                }
             }
 
-            if (acceleration < 0 && Gear == 0)
+            if (avg_tan_acce < 0 && Gear == 1)
             {
-                acce1 = Math.Pow((-1 * acceleration / 0.1172f), (1 / 1.7406f));
+                acce1 = -1 * Math.Pow((-1 * avg_tan_acce / 0.1148f), (1 / 1.8216f));
+                if (acce1 < -9.18)
+                {
+                    acce1 = -9.18;
+                }
+                if (speed < 1)
+                {
+                    acce1 = 0;
+                }
+                if (Math.Abs(acce1)<= 1)
+                {
+                    acce1 = 0;
+                }
+            }
+
+            if (avg_tan_acce >= 0 && Gear == 2)
+            {
+                acce1 =-1* Math.Pow((avg_tan_acce / 0.1148f), (1 / 1.8216f));
+                if (acce1 < -9.18)
+                {
+                    acce1 = -9.18;
+                }
+                if (speed < 1)
+                {
+                    acce1 = 0;
+                }
+                if (Math.Abs(acce1) <= 1)
+                {
+                    acce1 = 0;
+                }
+            }
+
+            if (avg_tan_acce < 0 && Gear == 2)
+            {
+                acce1 = Math.Pow((-1 * avg_tan_acce / 0.1172f), (1 / 1.7406f));
                 if (acce1 > 9.64)
                 {
                     acce1 = 9.64;
@@ -436,33 +510,15 @@ public class CarController : MonoBehaviour
                 {
                     acce1 = 0;
                 }
-            }
-
-            if (acceleration < 0 && Gear == 1)
-            {
-                acce1 = -1 * Math.Pow((-1 * acceleration / 0.1148f), (1 / 1.8216f));
-                if (acce1 < -9.18)
-                {
-                    acce1 = -9.18;
-                }
-                if (speed < 1)
+                if (Math.Abs(acce1) <= 1)
                 {
                     acce1 = 0;
                 }
             }
 
-            if (acceleration >= 0 && Gear == 0)
-            {
-                acce1 = -1 * Math.Pow((acceleration / 0.1148f), (1 / 1.8216f));
-                if (acce1 < -9.18)
-                {
-                    acce1 = -9.18;
-                }
-                if (speed < 1)
-                {
-                    acce1 = 0;
-                }
-            }
+            
+
+            
 
             if (centri_acce >= 0)
             {
@@ -480,7 +536,7 @@ public class CarController : MonoBehaviour
 
             if (centri_acce < 0)
             {
-                acce2 = -1 * Math.Pow((-1 * centri_acce / 0.1243f), (1 / 1.7132f));
+                acce2 = -3 * Math.Pow((-1 * centri_acce / 0.1243f), (1 / 1.7132f));
                 if (acce2 < -9.2)
                 {
                     acce2 = -9.2;
@@ -504,35 +560,40 @@ public class CarController : MonoBehaviour
 
             if (tilt > maxTilt)
             {
-                maxTilt = tilt;
+                tilt = maxTilt;
             }
             
             if (tilt < minTilt)
             {
-                minTilt = tilt;
+                tilt = minTilt;
             }
             Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
-            //if (tilt >= 5)
-            //{
-            //    tilt = 5;
-            //}
-            //
-            //if (tilt <= -5)
-            //{
-            //    tilt = -5;
-            //}
+            /*if (tilt >= 5)
+            {
+                tilt = 5;
+            }
+            
+            if (tilt <= -5)
+            {
+                tilt = -5;
+            }*/
             
             //傳給Arduino
             info = "s,"+acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00")+",";
             sp.WriteLine(info);
             //在面板上check
-            //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(acceleration, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
-            speedometer.text = Math.Round(speed * 3.6f, 1, MidpointRounding.AwayFromZero)*3 + " km/h " ;
+            //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(tan_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
 
-            lastVelocity = GetComponent<Rigidbody>().velocity.magnitude;
+            //speedometer.text = Math.Round(speed * 3.6f, 1, MidpointRounding.AwayFromZero)*3 + " km/h " ;
+            speedometer.text = speed.ToString();
+            ace1.text = acce1.ToString();
+            ace2.text = acce2.ToString();
+
+            lastVelocity = speed;
             timer_a = 0;
-            i = 0;
+            if (i>=10)
+                i = 0;
         }
     }
 
