@@ -159,7 +159,7 @@ public class CarController : MonoBehaviour
             //Debug.Log("Brake Pressed");
             m_brakePressed = true;
         }
-        else if (ctx.canceled)
+        else if (ctx.canceled && ctx.ReadValue<float>()==0)
         {
             m_brakeInput = 0;
             m_brakePressed = false;
@@ -374,10 +374,10 @@ public class CarController : MonoBehaviour
             W_FP.motorTorque = 0;
             W_RD.motorTorque = 0;
             W_RP.motorTorque = 0;
-            W_FD.brakeTorque = -1.6f * m_brakeInput * motorForce;
-            W_FP.brakeTorque = -1.6f * m_brakeInput * motorForce;
-            W_RD.brakeTorque = -1.6f * m_brakeInput * motorForce;
-            W_RP.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_FD.brakeTorque = 1.6f * m_brakeInput * motorForce;
+            W_FP.brakeTorque = 1.6f * m_brakeInput * motorForce;
+            W_RD.brakeTorque = 1.6f * m_brakeInput * motorForce;
+            W_RP.brakeTorque = 1.6f * m_brakeInput * motorForce;
         }
 
         //漸停
