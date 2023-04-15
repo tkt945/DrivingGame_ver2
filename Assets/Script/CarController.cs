@@ -439,6 +439,7 @@ public class CarController : MonoBehaviour
     {
         timer_a += Time.fixedDeltaTime;
         i++;
+        Debug.Log(i);
         if (i >= 1) //每1幀傳送
         {
             tan_acce = (speed - lastVelocity) / timer_a; //計算加速度
@@ -624,10 +625,14 @@ public class CarController : MonoBehaviour
             ace2.text = acce2.ToString();
             lastCentri_acce = centri_acce;
             lastVelocity = speed;
-            timer_a = 0;
-            if (i>=10)
-                i = 0;
+            timer_a = 0;            
         }
+        if (i >= 10)
+        {
+            i = 0;
+            Debug.Log("i歸零");
+        }
+            
     }
 
     // ApplySteer() & CheckWayPointDistance() 本來是寫給自動駕駛但後來沒用到
