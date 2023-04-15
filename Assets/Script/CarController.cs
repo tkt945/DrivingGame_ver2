@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class CarController : MonoBehaviour
 {
-    public SerialPort sp = new SerialPort("COM9", 115200);
+    public SerialPort sp = new SerialPort("COM6", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -555,7 +555,7 @@ public class CarController : MonoBehaviour
                     acce2 = 10;
                 }
                 //設個下限1，acce2的絕對值低於這個下陷會被省略不被椅子表現出來。下面反向同理。
-                else if (acce2 < 1) 
+                else if (acce2 < 3) 
                 {
                     acce2 = 0;
                 }
@@ -569,7 +569,7 @@ public class CarController : MonoBehaviour
                     acce2 = -10;
                 }
 
-                else if(acce2 > -1) 
+                else if(acce2 > -3) 
                 {
                     acce2 = 0;
                 }
@@ -594,7 +594,7 @@ public class CarController : MonoBehaviour
             {
                 tilt = minTilt;
             }
-            Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
+            //Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
             if (tilt >=8)
             {
@@ -605,33 +605,38 @@ public class CarController : MonoBehaviour
             {
                 tilt = -8;
             }
-            
-            //傳給Arduino
-            info = "s,"+acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00")+",";
-            sp.WriteLine(info);
-            //在面板上check
-            //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(tan_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
-            if (Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero)*1.5 >= 40)
+
+            if (Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) * 1.5 >= 40)
             {
                 speedometer.color = Color.red;
             }
             else
                 speedometer.color = Color.white;
 
-            speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero)*1.5 + " km/h " ;
+            speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) * 1.5 + " km/h ";
+
+            lastCentri_acce = centri_acce;
+            lastVelocity = speed;
+            timer_a = 0;
+            if (i >= 10)
+            {
+                i = 0;
+                Debug.Log("i歸零");
+            }
+
+            //傳給Arduino
+            info = "s,"+acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00")+",";
+            sp.WriteLine(info);
+            //在面板上check
+            //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(tan_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
+            
 
             //speedometer.text = speed.ToString();
             ace1.text = acce1.ToString();
             ace2.text = acce2.ToString();
-            lastCentri_acce = centri_acce;
-            lastVelocity = speed;
-            timer_a = 0;            
+            
         }
-        if (i >= 10)
-        {
-            i = 0;
-            Debug.Log("i歸零");
-        }
+        
             
     }
 
