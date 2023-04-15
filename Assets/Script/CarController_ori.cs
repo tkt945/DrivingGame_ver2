@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 
-public class CarController : MonoBehaviour
+public class CarController_ori : MonoBehaviour
 {
     public SerialPort sp = new SerialPort("COM6", 115200);
 
@@ -43,14 +43,9 @@ public class CarController : MonoBehaviour
     //擷取資料(值會變動)
     int i,j;
     float[] tan_acceArray = new float[10] {0,0,0,0,0,0,0,0,0,0};
-    double[] centri_acce_gradArray = new double[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     float speed, lastVelocity, tan_acce, timer_a;
     float sum_tan_acce, avg_tan_acce;
-    double sum_centri_acce_grad, avg_centri_acce_grad;
-    double R, centri_acce, lastCentri_acce;
-    double centri_acce_grad;
-
-    public float centri_factor=1;
+    double R, centri_acce;
 
     double acce1; //前後的坐墊位移值
     double acce2; //左右的坐墊位移值
@@ -240,7 +235,7 @@ public class CarController : MonoBehaviour
         }
         
     }
-    public void PosReset1(InputAction.CallbackContext ctx)
+    /*public void PosReset1(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
@@ -258,7 +253,7 @@ public class CarController : MonoBehaviour
 
         }
 
-    }
+    }*/
     public void ShiftGear(InputAction.CallbackContext ctx)
     {        
         if (ctx.performed)
@@ -451,7 +446,6 @@ public class CarController : MonoBehaviour
             avg_tan_acce = sum_tan_acce / tan_acceArray.Length;
 
             centri_acce = speed * speed / R; //計算向心加速度
-                      
 
             //計算1.坐墊前後位移值 2.坐墊左右位移值 3.傾斜角
             if (avg_tan_acce >= 0 && Gear == 1)
@@ -522,39 +516,19 @@ public class CarController : MonoBehaviour
                 }
             }
 
-
-
-            centri_acce_grad = (centri_acce - lastCentri_acce) / timer_a * centri_factor;
-
-
-            centri_acce_gradArray[i - 1] = centri_acce_grad;
-            sum_centri_acce_grad = 0;
-            for (j = 0; j < centri_acce_gradArray.Length; j++)
-            {
-                sum_centri_acce_grad += centri_acce_gradArray[j];
-            }
-            avg_centri_acce_grad = sum_centri_acce_grad / centri_acce_gradArray.Length;
             
 
-            if (avg_centri_acce_grad > 9.11)
-            {
-                avg_centri_acce_grad = 9.11;
-            }
-
-            if (avg_centri_acce_grad < -9.2)
-            {
-                avg_centri_acce_grad = -9.2;
-            }
+            
 
             if (centri_acce >= 0)
             {
-                acce2 = centri_factor* Math.Pow((centri_acce / 0.1272f), (1 / 1.6941f));
-                if (acce2 > 10)
+                acce2 = Math.Pow((centri_acce / 0.1272f), (1 / 1.6941f));
+                if (acce2 > 9.11)
                 {
-                    acce2 = 10;
+                    acce2 = 9.11;
                 }
-                //設個下限1，acce2的絕對值低於這個下陷會被省略不被椅子表現出來。下面反向同理。
-                else if (acce2 < 1) 
+                //來齁這裡我設個下限2，acce2的絕對值低於這個下陷會被省略不被椅子表現出來。下面反向同理。
+                else if (acce2 < 2) 
                 {
                     acce2 = 0;
                 }
@@ -562,13 +536,13 @@ public class CarController : MonoBehaviour
 
             if (centri_acce < 0)
             {
-                acce2 = -1 *centri_factor* Math.Pow((-1 * centri_acce / 0.1243f), (1 / 1.7132f));
-                if (acce2 < -10)
+                acce2 = -3 * Math.Pow((-1 * centri_acce / 0.1243f), (1 / 1.7132f));
+                if (acce2 < -9.2)
                 {
-                    acce2 = -10;
+                    acce2 = -9.2;
                 }
 
-                else if(acce2 > -1) 
+                else if(acce2 > -2) 
                 {
                     acce2 = 0;
                 }
@@ -595,14 +569,14 @@ public class CarController : MonoBehaviour
             }
             Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
-            if (tilt >=8)
+            if (tilt >=10)
             {
-                tilt = 8;
+                tilt = 10;
             }
             
-            if (tilt <= -8)
+            if (tilt <= -10)
             {
-                tilt = -8;
+                tilt = -10;
             }
             
             //傳給Arduino
@@ -610,19 +584,12 @@ public class CarController : MonoBehaviour
             sp.WriteLine(info);
             //在面板上check
             //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(tan_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
-            if (Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero)*1.5 >= 40)
-            {
-                speedometer.color = Color.red;
-            }
-            else
-                speedometer.color = Color.white;
 
-            speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero)*1.5 + " km/h " ;
-
+            speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero)*2 + " km/h " ;
             //speedometer.text = speed.ToString();
             ace1.text = acce1.ToString();
             ace2.text = acce2.ToString();
-            lastCentri_acce = centri_acce;
+
             lastVelocity = speed;
             timer_a = 0;
             if (i>=10)
