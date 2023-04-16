@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class CarController : MonoBehaviour
 {
-    public SerialPort sp = new SerialPort("COM6", 115200);
+    public SerialPort sp = new SerialPort("COM9", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
