@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public class CarController : MonoBehaviour
 {
+    public InitAngle InitAngle;
     public SerialPort sp = new SerialPort("COM6", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
@@ -55,6 +56,7 @@ public class CarController : MonoBehaviour
     double acce1; //前後的坐墊位移值
     double acce2; //左右的坐墊位移值
     double tilt; //傾斜角
+    float initAngle3, initAngle4; //前後馬達初始值
     string info; //傳送給Arduino的字串
 
     [SerializeField]
@@ -457,7 +459,7 @@ public class CarController : MonoBehaviour
             //計算1.坐墊前後位移值 2.坐墊左右位移值 3.傾斜角
             if (avg_tan_acce >= 0 && Gear == 1)
             {
-                acce1 = Math.Pow((avg_tan_acce / 0.1172f), (1 / 1.7406f));
+                acce1 = 1.8f*Math.Pow((avg_tan_acce / 0.1172f), (1 / 1.7406f));
                 if (acce1 > 9.64)
                 {
                     acce1 = 9.64;
@@ -474,7 +476,7 @@ public class CarController : MonoBehaviour
 
             if (avg_tan_acce < 0 && Gear == 1)
             {
-                acce1 = -1 * Math.Pow((-1 * avg_tan_acce / 0.1148f), (1 / 1.8216f));
+                acce1 = -1.8f * Math.Pow((-1 * avg_tan_acce / 0.1148f), (1 / 1.8216f));
                 if (acce1 < -9.18)
                 {
                     acce1 = -9.18;
@@ -491,7 +493,7 @@ public class CarController : MonoBehaviour
 
             if (avg_tan_acce >= 0 && Gear == 2)
             {
-                acce1 =-1* Math.Pow((avg_tan_acce / 0.1148f), (1 / 1.8216f));
+                acce1 =-1.8f* Math.Pow((avg_tan_acce / 0.1148f), (1 / 1.8216f));
                 if (acce1 < -9.18)
                 {
                     acce1 = -9.18;
@@ -508,7 +510,7 @@ public class CarController : MonoBehaviour
 
             if (avg_tan_acce < 0 && Gear == 2)
             {
-                acce1 = Math.Pow((-1 * avg_tan_acce / 0.1172f), (1 / 1.7406f));
+                acce1 = 1.8f * Math.Pow((-1 * avg_tan_acce / 0.1172f), (1 / 1.7406f));
                 if (acce1 > 9.64)
                 {
                     acce1 = 9.64;
@@ -596,14 +598,14 @@ public class CarController : MonoBehaviour
             }
             //Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
-            if (tilt >=8)
+            if (tilt >=6)
             {
-                tilt = 8;
+                tilt = 6;
             }
             
-            if (tilt <= -8)
+            if (tilt <= -6)
             {
-                tilt = -8;
+                tilt = -6;
             }
 
             if (Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) * 1.5 >= 40)
@@ -625,7 +627,7 @@ public class CarController : MonoBehaviour
             }
 
             //傳給Arduino
-            info = "s,"+acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00")+",";
+            info = "s," + acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00") + "," + InitAngle.initAngle3.ToString() + "," + InitAngle.initAngle4.ToString() + ",";
             sp.WriteLine(info);
             //在面板上check
             //speedometer.text = Math.Round(speed*3.6f, 2, MidpointRounding.AwayFromZero) + " km/hr " + Environment.NewLine + Math.Round(tan_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(centri_acce, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(tilt, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce1, 2, MidpointRounding.AwayFromZero) + Environment.NewLine + Math.Round(acce2, 2, MidpointRounding.AwayFromZero);
