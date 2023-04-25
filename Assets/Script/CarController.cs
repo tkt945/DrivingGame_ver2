@@ -8,12 +8,8 @@ using UnityEngine.InputSystem;
 
 public class CarController : MonoBehaviour
 {
-<<<<<<< Updated upstream
     public InitAngle InitAngle;
     public SerialPort sp = new SerialPort("COM6", 115200);
-=======
-    public SerialPort sp = new SerialPort("COM3", 115200);
->>>>>>> Stashed changes
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -457,7 +453,7 @@ public class CarController : MonoBehaviour
             }
             avg_tan_acce = sum_tan_acce / tan_acceArray.Length;
 
-            
+            centri_acce = speed * speed / R; //計算向心加速度
                       
 
             //計算1.坐墊前後位移值 2.坐墊左右位移值 3.傾斜角
@@ -529,7 +525,6 @@ public class CarController : MonoBehaviour
                 }
             }
 
-            centri_acce = speed * speed / R; //計算向心加速度
 
 
             centri_acce_grad = (centri_acce - lastCentri_acce) / timer_a * centri_factor;
