@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class CarController : MonoBehaviour
 {
     public InitAngle InitAngle;
-    public SerialPort sp = new SerialPort("COM3", 115200);
+    public SerialPort sp = new SerialPort("COM6", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -315,6 +315,7 @@ public class CarController : MonoBehaviour
     private void Steer()
     {
         m_steeringAngle = maxSteerAngle * m_horizontalInput;
+        Debug.Log(m_horizontalInput);
         W_FD.steerAngle = m_steeringAngle;
         W_FP.steerAngle = m_steeringAngle;
 
@@ -337,10 +338,10 @@ public class CarController : MonoBehaviour
         //加速
         if (!m_brakePressed && Gear == 1)
         {
-            W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
-            W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
-            W_RD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
-            W_RP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 30) / maxSpeed;
+            W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_RD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_RP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
@@ -441,7 +442,7 @@ public class CarController : MonoBehaviour
     {
         timer_a += Time.fixedDeltaTime;
         i++;
-        Debug.Log(i);
+        //Debug.Log(i);
         if (i >= 1) //每1幀傳送
         {
             tan_acce = (speed - lastVelocity) / timer_a; //計算加速度
@@ -459,7 +460,7 @@ public class CarController : MonoBehaviour
             //計算1.坐墊前後位移值 2.坐墊左右位移值 3.傾斜角
             if (avg_tan_acce >= 0 && Gear == 1)
             {
-                acce1 = 1.8f*Math.Pow((avg_tan_acce / 0.1172f), (1 / 1.7406f));
+                acce1 = Math.Pow((avg_tan_acce / 0.1172f), (1 / 1.7406f));
                 if (acce1 > 9.64)
                 {
                     acce1 = 9.64;
@@ -476,7 +477,7 @@ public class CarController : MonoBehaviour
 
             if (avg_tan_acce < 0 && Gear == 1)
             {
-                acce1 = -1.8f * Math.Pow((-1 * avg_tan_acce / 0.1148f), (1 / 1.8216f));
+                acce1 = - Math.Pow((-1 * avg_tan_acce / 0.1148f), (1 / 1.8216f));
                 if (acce1 < -9.18)
                 {
                     acce1 = -9.18;
@@ -493,7 +494,7 @@ public class CarController : MonoBehaviour
 
             if (avg_tan_acce >= 0 && Gear == 2)
             {
-                acce1 =-1.8f* Math.Pow((avg_tan_acce / 0.1148f), (1 / 1.8216f));
+                acce1 =- Math.Pow((avg_tan_acce / 0.1148f), (1 / 1.8216f));
                 if (acce1 < -9.18)
                 {
                     acce1 = -9.18;
@@ -599,15 +600,7 @@ public class CarController : MonoBehaviour
             }
             //Debug.Log("最大前傾角=" + maxTilt + "  最大後傾角=" + minTilt +"  現在傾角"+tilt);
 
-            if (tilt >=6)
-            {
-                tilt = 6;
-            }
             
-            if (tilt <= -6)
-            {
-                tilt = -6;
-            }
 
             if (Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) * 1.5 >= 40)
             {
@@ -616,7 +609,7 @@ public class CarController : MonoBehaviour
             else
                 speedometer.color = Color.white;
 
-            speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) * 1.5 + " km/h ";
+            speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) /2 + " km/h ";
 
             lastCentri_acce = centri_acce;
             lastVelocity = speed;

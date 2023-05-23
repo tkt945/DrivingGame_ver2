@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.11764655, g: 0.16934446, b: 0.19917247, a: 1}
+  m_IndirectSpecularColor: {r: 0.11764492, g: 0.16934286, b: 0.19917111, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2655,12 +2655,12 @@ PrefabInstance:
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: maxTilt
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: minTilt
-      value: -10
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
@@ -2691,7 +2691,7 @@ PrefabInstance:
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: motorForce
-      value: 120
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
@@ -2716,7 +2716,7 @@ PrefabInstance:
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: centri_factor
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
@@ -2806,7 +2806,7 @@ PrefabInstance:
     - target: {fileID: 437467672033045018, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: m_Mass
-      value: 1000
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 437467672033045019, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
