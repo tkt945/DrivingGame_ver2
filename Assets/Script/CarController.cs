@@ -246,8 +246,8 @@ public class CarController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            transform.position = new Vector3(32.42f, 0.59f, 53.59f);
-            transform.eulerAngles = new Vector3(0, 256.9f, 0);
+            transform.position = new Vector3(129.869f, -6.883f, 213.981f);
+            transform.eulerAngles = new Vector3(-2, 436.9f, 0);
             //transform.position = new Vector3(-193.07f, -1.676f, 29.973f);
             //transform.rotation = new Quaternion(0, 0, 0, 0);
             //位置重置時使車輛動態靜止
