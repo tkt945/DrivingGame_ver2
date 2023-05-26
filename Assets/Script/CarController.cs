@@ -338,10 +338,10 @@ public class CarController : MonoBehaviour
         //加速
         if (!m_brakePressed && Gear == 1)
         {
-            W_FD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_FP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_RD.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
-            W_RP.motorTorque = (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_FD.motorTorque = (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_FP.motorTorque = (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_RD.motorTorque = (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
+            W_RP.motorTorque = (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce * (maxSpeed - speed * 3.6f + 20) / maxSpeed;
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
@@ -351,10 +351,10 @@ public class CarController : MonoBehaviour
         //倒車
         else if (!m_brakePressed && Gear == 2)
         {
-            W_FD.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
-            W_FP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
-            W_RD.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
-            W_RP.motorTorque = -1 * (m_brakeGasInput * 0.25f + m_gasInput * 0.75f) * motorForce / 3;
+            W_FD.motorTorque = -1 * (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce / 3;
+            W_FP.motorTorque = -1 * (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce / 3;
+            W_RD.motorTorque = -1 * (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce / 3;
+            W_RP.motorTorque = -1 * (m_brakeGasInput * 0.15f + m_gasInput * 0.85f) * motorForce / 3;
             W_FD.brakeTorque = 0;
             W_FP.brakeTorque = 0;
             W_RD.brakeTorque = 0;
