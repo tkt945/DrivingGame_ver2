@@ -602,12 +602,8 @@ public class CarController : MonoBehaviour
 
             
 
-            if (Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) * 1.5 >= 40)
-            {
-                speedometer.color = Color.red;
-            }
-            else
-                speedometer.color = Color.white;
+            
+            speedometer.color = Color.white;
 
             speedometer.text = Math.Round(speed * 3.6f, 0, MidpointRounding.AwayFromZero) /2 + " km/h ";
 
