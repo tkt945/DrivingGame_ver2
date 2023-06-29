@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class CarController : MonoBehaviour
 {
     public InitAngle InitAngle;
-    public SerialPort sp = new SerialPort("COM6", 115200);
+    public SerialPort sp = new SerialPort("COM8", 115200);
 
     public GameObject CarSteering,warning_vision,doinWell;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -252,10 +252,29 @@ public class CarController : MonoBehaviour
             //transform.rotation = new Quaternion(0, 0, 0, 0);
             //位置重置時使車輛動態靜止
             rb.velocity = new Vector3(0, 0, 0);
+            gear.text = "P";
+            Gear = 0;
             W_FD.motorTorque = 0;
             W_FP.motorTorque = 0;
             W_RD.motorTorque = 0;
-            W_RP.motorTorque = 0;   
+            W_RP.motorTorque = 0;
+
+            W_FD.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_FP.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_RD.brakeTorque = -1.6f * m_brakeInput * motorForce;
+            W_RP.brakeTorque = -1.6f * m_brakeInput * motorForce;
+
+
+
+            if (ending.color.a != 0)
+            {
+                Color end_panel_color = Color.white;
+                end_panel_color.a = 0;
+                ending.color = end_panel_color;
+                Color endtxt_color = endtxt.color;
+                endtxt_color.a = 0;
+                endtxt.color = endtxt_color;
+            }
 
 
         }
