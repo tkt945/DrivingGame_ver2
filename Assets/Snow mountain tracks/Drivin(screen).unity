@@ -2716,7 +2716,7 @@ PrefabInstance:
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
       propertyPath: centri_factor
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 106112638286285204, guid: a5e0dcc6e15dec4419e54a046237f644,
         type: 3}
