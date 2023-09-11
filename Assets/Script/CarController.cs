@@ -11,11 +11,10 @@ public class CarController : MonoBehaviour
     public InitAngle InitAngle;
     public SerialPort sp = new SerialPort("COM3", 115200);
 
-    public GameObject CarSteering,warning_vision,doinWell;  //方向盤
+    public GameObject CarSteering;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
     public AudioSource audioSource2;  //引擎聲音2
-    public Text speedometer,gear,tilt_txt, ace1,ace2,endtxt; //面板參考
-    public Image ending;//結束畫面
+    public Text speedometer,gear; //面板參考
     public Rigidbody rb;
     //輸入裝置的input
     private float m_horizontalInput;
@@ -27,7 +26,6 @@ public class CarController : MonoBehaviour
     //本來是寫給自動駕駛但後來沒用到
     private List<Transform> nodes;
     private int currentNode = 0;
-    public Transform path;
     public float CheckpointDistance;
 
     //輪胎 F:front R:rear D:driver P:passenger
@@ -87,8 +85,7 @@ public class CarController : MonoBehaviour
     }
     private void Update() {
         //GetInput();
-        //warning_vision.SetActive(Mathf.Abs((float)tilt) >= 15);
-        tilt_txt.text = tilt.ToString();
+        //tilt_txt.text = tilt.ToString();
 
     }
     private void FixedUpdate()
@@ -229,7 +226,7 @@ public class CarController : MonoBehaviour
             
 
 
-            if (ending.color.a != 0)
+            /*if (ending.color.a != 0)
             {
                 Color end_panel_color = Color.white;
                 end_panel_color.a = 0; 
@@ -237,7 +234,7 @@ public class CarController : MonoBehaviour
                 Color endtxt_color = endtxt.color;
                 endtxt_color.a = 0;
                 endtxt.color = endtxt_color;
-            }
+            }*/
 
         }
         
@@ -266,7 +263,7 @@ public class CarController : MonoBehaviour
 
 
 
-            if (ending.color.a != 0)
+            /*if (ending.color.a != 0)
             {
                 Color end_panel_color = Color.white;
                 end_panel_color.a = 0;
@@ -274,7 +271,7 @@ public class CarController : MonoBehaviour
                 Color endtxt_color = endtxt.color;
                 endtxt_color.a = 0;
                 endtxt.color = endtxt_color;
-            }
+            }*/
 
 
         }
@@ -643,8 +640,8 @@ public class CarController : MonoBehaviour
             
 
             //speedometer.text = speed.ToString();
-            ace1.text = acce1.ToString();
-            ace2.text = acce2.ToString();
+            //ace1.text = acce1.ToString();
+            //ace2.text = acce2.ToString();
             
         }
         
