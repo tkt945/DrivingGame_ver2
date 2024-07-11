@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class CarController : MonoBehaviour
 {
     public InitAngle InitAngle;
-    public SerialPort sp = new SerialPort("COM12", 115200);
+    public SerialPort sp = new SerialPort("COM18", 115200);
 
     public GameObject CarSteering;  //方向盤
     public AudioSource audioSource1;  //引擎聲音1
@@ -545,27 +545,27 @@ public class CarController : MonoBehaviour
             centri_acce = speed * speed / R; //計算向心加速度
 
 
-            centri_acce_grad = (centri_acce - lastCentri_acce) / timer_a * centri_factor;
+            // centri_acce_grad = (centri_acce - lastCentri_acce) / timer_a * centri_factor;
 
 
-            centri_acce_gradArray[i - 1] = centri_acce_grad;
-            sum_centri_acce_grad = 0;
-            for (j = 0; j < centri_acce_gradArray.Length; j++)
-            {
-                sum_centri_acce_grad += centri_acce_gradArray[j];
-            }
-            avg_centri_acce_grad = sum_centri_acce_grad / centri_acce_gradArray.Length;
+            // centri_acce_gradArray[i - 1] = centri_acce_grad;
+            // sum_centri_acce_grad = 0;
+            // for (j = 0; j < centri_acce_gradArray.Length; j++)
+            // {
+            //     sum_centri_acce_grad += centri_acce_gradArray[j];
+            // }
+            // avg_centri_acce_grad = sum_centri_acce_grad / centri_acce_gradArray.Length;
             
 
-            if (avg_centri_acce_grad > 9.11)
-            {
-                avg_centri_acce_grad = 9.11;
-            }
+            // if (avg_centri_acce_grad > 9.11)
+            // {
+            //     avg_centri_acce_grad = 9.11;
+            // }
 
-            if (avg_centri_acce_grad < -9.2)
-            {
-                avg_centri_acce_grad = -9.2;
-            }
+            // if (avg_centri_acce_grad < -9.2)
+            // {
+            //     avg_centri_acce_grad = -9.2;
+            // }
 
             if (centri_acce >= 0)
             {

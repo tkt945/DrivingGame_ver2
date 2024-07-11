@@ -9,13 +9,13 @@ using UnityEngine.InputSystem;
 public class TiltCalibration : MonoBehaviour
 {
     public InitAngle InitAngle;
-    public SerialPort sp = new SerialPort("COM12", 115200);
+    public SerialPort sp = new SerialPort("COM18", 115200);
     public Text FrontMotorAngle, BackMotorAngle;
 
-    double acce1=0; //«e«áªº§¤¹Ô¦ì²¾­È
-    double acce2=0; //¥ª¥kªº§¤¹Ô¦ì²¾­È
-    double tilt = 0; //¶É±×¨¤
-    string info; //¶Ç°eµ¹Arduinoªº¦r¦ê
+    double acce1=0; //å‰å¾Œçš„åå¢Šä½ç§»å€¼
+    double acce2=0; //å·¦å³çš„åå¢Šä½ç§»å€¼
+    double tilt = 0; //å‚¾æ–œè§’åº¦
+    string info; //å‚³é€çµ¦Arduinoçš„å­—ä¸²
 
 
     private void Start()
@@ -39,19 +39,18 @@ public class TiltCalibration : MonoBehaviour
     }
 
 
-    // SendInfo: ¶Ç°e¸ê®Æµ¹Arduino
+    // SendInfo: å‚³è¨Šæ¯çµ¦Arduino
     private void SendInfo()
     {
-        Debug.Log("456");
-        //¶Çµ¹Arduino
+        ///Debug.Log("456");
+        //å‚³è¨Šæ¯çµ¦Arduino
         info = "s," + acce1.ToString("#0.00") + "," + acce2.ToString("#0.00") + "," + tilt.ToString("#0.00") + ","+ InitAngle.initAngle3.ToString() + "," + InitAngle.initAngle4.ToString() + ",";
         sp.WriteLine(info);               
     }
     
 
     public void ChangeAngle3(float angleToPlus)
-    {
-        Debug.Log("«e°¨¹F¨¤«×§ïÅÜ");
+    {        
         InitAngle.initAngle3 += angleToPlus;
     }
 

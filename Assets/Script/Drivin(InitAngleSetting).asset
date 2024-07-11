@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5178c2e7f976f194e86330a1612e8006, type: 3}
   m_Name: Drivin(InitAngleSetting)
   m_EditorClassIdentifier: 
-  initAngle3: 20.5
-  initAngle4: 61.5
+  initAngle3: 7
+  initAngle4: 64
